@@ -35,7 +35,7 @@ from openerp import netsvc
 from report_aeroo import Aeroo_report, aeroo_ooo_test
 from openerp.report.report_sxw import rml_parse
 import base64, binascii
-from openerp import tools
+from openerp import api, tools
 import encodings
 from openerp.tools.translate import _
 from openerp.report.report_sxw import report_sxw, report_rml
@@ -725,7 +725,9 @@ class report_xml(osv.osv):
 
         return new_report
 
-    def __init__(self, pool, cr):
+    @api.model
+    def _setup_fields(self):
+        result = super(report_xml, self)._setup_fields()
         self._columns['report_type'].selection.append(('aeroo', 'Aeroo'))
-        return super(report_xml, self).__init__(pool, cr)
-
+        self._fields['report_type'].selection.append(('aeroo', 'Aeroo'))
+        return result
